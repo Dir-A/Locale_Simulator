@@ -8,46 +8,44 @@ Windows Locale Simulator
 
 ## Todo
 
-- Ntdll
+- Nls
 
-  - [x] nls codepage path
+  - [x] Wow64 Process
+  - [ ] x64 Process
   
 - Message
 
-  under implementation
+  - [ ] Win32u
+    - [ ] NtUserMessageCall
+
+  [under implementation]
 
 - GID
 
    - Default FaceName
 
-    under implementation
+   [under implementation]
 
   - Default Charset
 
     under implementation
 
-  under implementation
+  [under implementation]
 
 - LCID
 
-  under implementation
+  [under implementation]
 
 - Timezone
 
-  under implementation
+  [under implementation]
 
 
 
-## Supported System Version
+## Supported System
 
-- [x] Windows7 Wow64
-- [x] Windows8 Wow64
-- [x] Windows8.1 Wow64
-- [x] Windows10 Wow64
-- [x] Windows11 Wow64
-
-- [ ] Windows7 x64 (under implementation)   
-- [ ] Windows8 x64 (under implementation)  
-- [ ] Windows8.1 x64 (under implementation)  
-- [ ] Windows10 x64 (under implementation)   
-- [ ] Windows11 x64 (under implementation)  
+Windows7 x64
+Windows8 x64
+Windows8.1 x64
+Windows10 x64
+Windows11 x64
