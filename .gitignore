@@ -1,0 +1,9 @@
+# VS
+.vs/
+build/
+
+# VSCode
+.vscode/.cache/
+.vscode/compile_commands.json
+.vscode/c_cpp_properties.json
+
