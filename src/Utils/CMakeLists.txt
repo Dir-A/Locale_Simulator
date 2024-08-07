@@ -9,7 +9,8 @@ add_library("${PROJECT_NAME}"
     "src/Locale_Simulator/Utils/SysInfo.cpp"
     "src/Locale_Simulator/Utils/TextConvert.cpp"
     "src/Locale_Simulator/Utils/VAHelper.cpp"
-    "src/Locale_Simulator/Utils/EnvHelpher.cpp")
+    "src/Locale_Simulator/Utils/EnvHelpher.cpp"
+    "src/Locale_Simulator/Utils/LSStatus.cpp")
 add_library(LocaleSimulator::Utils ALIAS "${PROJECT_NAME}")
 target_include_directories("${PROJECT_NAME}" PUBLIC "src")
 target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_23)

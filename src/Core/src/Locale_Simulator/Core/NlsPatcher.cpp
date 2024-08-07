@@ -5,6 +5,7 @@
 #include <Locale_Simulator/Utils/VAHelper.h>
 #include <Locale_Simulator/Utils/SysInfo.h>
 #include <Locale_Simulator/Utils/EnvHelpher.h>
+#include <Locale_Simulator/Utils/LSStatus.h>
 
 
 namespace ZQF::LS::Core
@@ -158,6 +159,7 @@ namespace ZQF::LS::Core
 
     static auto CodePageTablePatch(const HANDLE hProcess, const std::size_t nCodePage, const bool isWin11) -> bool
     {
+        // find NtGetNlsSectionPtr and RtlInitCodePageTable
         const auto ntdll_handle = ::GetModuleHandleW(L"ntdll.dll");
         if (ntdll_handle == NULL) { return false; }
         const auto fn_NtGetNlsSectionPtr_va = reinterpret_cast<std::size_t>(::GetProcAddress(ntdll_handle, "NtGetNlsSectionPtr"));
@@ -211,46 +213,46 @@ namespace ZQF::LS::Core
 
 #endif // _WIN64
 
-	
+
 } // namespace ZQF::LS::Core
 
 namespace ZQF::LS::Core
 {
-	auto NlsPatcher::Install(const HANDLE hProcess) -> bool
-	{
-        const auto code_page_set_opt = Utils::EnvHelper::LoadNum(L"Locale_Simulator_CodePage_Set");
-        if (!code_page_set_opt.has_value()) { return false; }
-		const auto is_win11 = (Utils::SysInfo::GetBuildNumber() >= 22000);
-        return CodePageTablePatch(hProcess, *code_page_set_opt, is_win11);
-	}
+    auto NlsPatcher::Install(const HANDLE hProcess) -> bool
+    {
+        const auto code_page_new_opt = Utils::LSStatus::GetCodePageNew();
+        if (!code_page_new_opt.has_value()) { return false; }
+        const auto is_win11 = (Utils::SysInfo::GetBuildNumber() >= 22000);
+        return CodePageTablePatch(hProcess, *code_page_new_opt, is_win11);
+    }
 
-	auto NlsPatcher::AfterWith() -> bool
-	{
-        const auto hook_va_opt = Utils::EnvHelper::LoadNum(L"Locale_Simulator_NLS_PATCHER_HOOK_VA");
+    auto NlsPatcher::AfterWith() -> bool
+    {
+        const auto hook_va_opt = Utils::EnvHelper::LoadNum(L"Locale_Simulator.NlsPatcher.HookFunc.VA");
         if (!hook_va_opt.has_value()) { return false; }
-        const auto shellcode_va_opt = Utils::EnvHelper::LoadNum(L"Locale_Simulator_NLS_PATCHER_SHELLCODE_VA");
+        const auto shellcode_va_opt = Utils::EnvHelper::LoadNum(L"Locale_Simulator.NlsPatcher.Shellcode.VA");
         if (!shellcode_va_opt.has_value()) { return false; }
-        const auto old_protect_opt = Utils::EnvHelper::LoadNum(L"Locale_Simulator_NLS_PATCHER_PROTECTION");
+        const auto old_protect_opt = Utils::EnvHelper::LoadNum(L"Locale_Simulator.NlsPatcher.HookFunc.Protect");
         if (!old_protect_opt.has_value()) { return false; }
-        
-		Utils::VAHelper va_helper{ ::GetCurrentProcess() };
 
-		const auto free_status = va_helper.Free(*shellcode_va_opt);
-		if (!free_status) { return false; }
-		const auto set_protect_status = va_helper.SetProtect(*hook_va_opt, 5, *old_protect_opt);
-		if (!set_protect_status) { return false; }
+        Utils::VAHelper va_helper{ ::GetCurrentProcess() };
 
-		return true;
-	}
+        const auto free_status = va_helper.Free(*shellcode_va_opt);
+        if (!free_status) { return false; }
+        const auto set_protect_status = va_helper.SetProtect(*hook_va_opt, 5, *old_protect_opt);
+        if (!set_protect_status) { return false; }
 
-	auto NlsPatcher::SaveInfoViaEnv(const std::size_t nHookVA, const std::size_t nShellCodeVA, const std::size_t nOldProtect) -> bool
-	{
-        const auto store_status_0 = Utils::EnvHelper::StoreNum(L"Locale_Simulator_NLS_PATCHER_HOOK_VA", nHookVA);
-		if (!store_status_0) { return false; }
-        const auto store_status_1 = Utils::EnvHelper::StoreNum(L"Locale_Simulator_NLS_PATCHER_SHELLCODE_VA", nShellCodeVA);
+        return true;
+    }
+
+    auto NlsPatcher::SaveInfoViaEnv(const std::size_t nHookVA, const std::size_t nShellCodeVA, const std::size_t nOldProtect) -> bool
+    {
+        const auto store_status_0 = Utils::EnvHelper::StoreNum(L"Locale_Simulator.NlsPatcher.HookFunc.VA", nHookVA);
+        if (!store_status_0) { return false; }
+        const auto store_status_1 = Utils::EnvHelper::StoreNum(L"Locale_Simulator.NlsPatcher.Shellcode.VA", nShellCodeVA);
         if (!store_status_1) { return false; }
-        const auto store_status_2 = Utils::EnvHelper::StoreNum(L"Locale_Simulator_NLS_PATCHER_PROTECTION", nOldProtect);
+        const auto store_status_2 = Utils::EnvHelper::StoreNum(L"Locale_Simulator.NlsPatcher.HookFunc.Protect", nOldProtect);
         if (!store_status_2) { return false; }
-		return true;
-	}
+        return true;
+    }
 } // namespace ZQF::LS::Core

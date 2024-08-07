@@ -9,13 +9,9 @@
 static auto StartHook(HMODULE /* hDllBase */) -> void
 {
     ZQF::ZxHook::Detours::AfterWith();
-
     ZQF::LS::Core::NlsPatcher::AfterWith();
-
     ZQF::LS::Core::MsgPatcher::Install();
-
     ZQF::LS::Core::WndPatcher::Install();
-
     ZQF::LS::Core::GdiPatcher::Install();
 }
 

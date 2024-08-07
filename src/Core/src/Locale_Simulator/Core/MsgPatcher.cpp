@@ -1,7 +1,7 @@
 #include "MsgPatcher.h"
-#include <Locale_Simulator/Utils/TextConvert.h>
-#include <ZxHook/SHooker.h>
 #include <Windows.h>
+#include <ZxHook/SHooker.h>
+#include <Locale_Simulator/Utils/TextConvert.h>
 
 
 namespace ZQF::LS::Core
