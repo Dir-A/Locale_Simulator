@@ -8,6 +8,7 @@ project(LocaleSimulator_Core)
 add_library("${PROJECT_NAME}"
     "src/Locale_Simulator/Core/NlsPatcher.cpp"
     "src/Locale_Simulator/Core/MsgPatcher.cpp"
+    "src/Locale_Simulator/Core/WndPatcher.cpp"
 )
 add_library(LocaleSimulator::Core ALIAS "${PROJECT_NAME}")
 target_include_directories("${PROJECT_NAME}" PUBLIC "src")

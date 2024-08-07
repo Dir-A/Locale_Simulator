@@ -12,13 +12,13 @@ namespace ZQF::LS::Core
 
         // proc send ansi data
         {
-            std::unique_ptr<wchar_t[]> buffer;
+            std::pair<std::unique_ptr<wchar_t[]>, std::size_t> buffer;
 
             switch (Message)
             {
             case WM_SETTEXT:
                 buffer = Utils::MBCSToWide(reinterpret_cast<const char*>(lParam));
-                lParam = reinterpret_cast<LPARAM>(buffer.get());
+                lParam = reinterpret_cast<LPARAM>(buffer.first.get());
                 Ansi = FALSE;
                 break;
             }

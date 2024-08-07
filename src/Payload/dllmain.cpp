@@ -2,6 +2,7 @@
 #include <ZxHook/Hook.h>
 #include <Locale_Simulator/Core/NlsPatcher.h>
 #include <Locale_Simulator/Core/MsgPatcher.h>
+#include <Locale_Simulator/Core/WndPatcher.h>
 
 
 static auto StartHook(HMODULE /* hDllBase */) -> void
@@ -11,6 +12,8 @@ static auto StartHook(HMODULE /* hDllBase */) -> void
     ZQF::LS::Core::NlsPatcher::AfterWith();
 
     ZQF::LS::Core::MsgPatcher::Install();
+
+    ZQF::LS::Core::WndPatcher::Install();
 }
 
 
