@@ -8,6 +8,7 @@ auto wmain(int argc, wchar_t** argv) -> int
 {
     if (argc == 1) { return 0; }
 
+    ZQF::LS::Utils::EnvHelper::StoreNum(L"Locale_Simulator_CharSet_Set", 0x80);
     ZQF::LS::Utils::EnvHelper::StoreNum(L"Locale_Simulator_CodePage_Set", 0x3A4);
     ZQF::LS::Utils::EnvHelper::StoreNum(L"Locale_Simulator_CodePage_Org", ::GetACP());
 

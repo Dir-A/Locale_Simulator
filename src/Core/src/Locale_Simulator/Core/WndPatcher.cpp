@@ -1,4 +1,4 @@
-#include <Locale_Simulator/Core/WndPatcher.h>
+#include "WndPatcher.h"
 #include <Locale_Simulator/Utils/TextConvert.h>
 #include <ZxHook/SHooker.h>
 #include <Windows.h>
