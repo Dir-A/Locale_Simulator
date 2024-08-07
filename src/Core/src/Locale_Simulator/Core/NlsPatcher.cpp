@@ -1,9 +1,10 @@
-#include <Locale_Simulator/Core/NlsPatcher.h>
-#include <Locale_Simulator/Utils/VAHelper.h>
-#include <Locale_Simulator/Utils/SysInfo.h>
+#include "NlsPatcher.h"
 #include <array>
 #include <cstdint>
 #include <cstdio>
+#include <Locale_Simulator/Utils/VAHelper.h>
+#include <Locale_Simulator/Utils/SysInfo.h>
+#include <Locale_Simulator/Utils/EnvHelpher.h>
 
 
 namespace ZQF::LS::Core
@@ -215,44 +216,28 @@ namespace ZQF::LS::Core
 
 namespace ZQF::LS::Core
 {
-	auto NlsPatcher::Install() const -> bool
+	auto NlsPatcher::Install(const HANDLE hProcess) -> bool
 	{
+        const auto code_page_set_opt = Utils::EnvHelper::LoadNum(L"Locale_Simulator_CodePage_Set");
+        if (!code_page_set_opt.has_value()) { return false; }
 		const auto is_win11 = (Utils::SysInfo::GetBuildNumber() >= 22000);
-        return CodePageTablePatch(m_hProcess, m_nCodePage, is_win11);
+        return CodePageTablePatch(hProcess, *code_page_set_opt, is_win11);
 	}
 
 	auto NlsPatcher::AfterWith() -> bool
 	{
-#ifdef _WIN64
-		LPCWSTR format = L"%ull";
-#else
-		LPCWSTR format = L"%ul";
-#endif // _WIN64
-		WCHAR buffer[64];
-		BOOL get_status{};
-
-		get_status = ::GetEnvironmentVariableW(L"LEP_NLS_PATCHER_HOOK_VA", buffer, 64);
-		if (!get_status) { return false; }
-		std::size_t hook_va{};
-		::swscanf_s(buffer, format, &hook_va);
-		if (!hook_va) { return false; }
-
-		::GetEnvironmentVariableW(L"LEP_NLS_PATCHER_SHELLCODE_VA", buffer, 64);
-		std::size_t shellcode_va{};
-		::swscanf_s(buffer, format, &shellcode_va);
-		if (!shellcode_va) { return false; }
-
-		::GetEnvironmentVariableW(L"LEP_NLS_PATCHER_PROTECTION", buffer, 64);
-		std::size_t old_protect{};
-		::swscanf_s(buffer, format, &old_protect);
-		if (!old_protect) { return false; }
-
+        const auto hook_va_opt = Utils::EnvHelper::LoadNum(L"Locale_Simulator_NLS_PATCHER_HOOK_VA");
+        if (!hook_va_opt.has_value()) { return false; }
+        const auto shellcode_va_opt = Utils::EnvHelper::LoadNum(L"Locale_Simulator_NLS_PATCHER_SHELLCODE_VA");
+        if (!shellcode_va_opt.has_value()) { return false; }
+        const auto old_protect_opt = Utils::EnvHelper::LoadNum(L"Locale_Simulator_NLS_PATCHER_PROTECTION");
+        if (!old_protect_opt.has_value()) { return false; }
+        
 		Utils::VAHelper va_helper{ ::GetCurrentProcess() };
 
-		const auto free_status = va_helper.Free(shellcode_va);
+		const auto free_status = va_helper.Free(*shellcode_va_opt);
 		if (!free_status) { return false; }
-
-		const auto set_protect_status = va_helper.SetProtect(hook_va, 5, old_protect);
+		const auto set_protect_status = va_helper.SetProtect(*hook_va_opt, 5, *old_protect_opt);
 		if (!set_protect_status) { return false; }
 
 		return true;
@@ -260,31 +245,12 @@ namespace ZQF::LS::Core
 
 	auto NlsPatcher::SaveInfoViaEnv(const std::size_t nHookVA, const std::size_t nShellCodeVA, const std::size_t nOldProtect) -> bool
 	{
-#ifdef _WIN64
-		LPCWSTR format = L"%ull";
-#else
-		LPCWSTR format = L"%ul";
-#endif // _WIN64
-
-		WCHAR buffer[64];
-		BOOL set_status{};
-		int format_status{};
-
-		format_status = ::wsprintfW(buffer, format, nHookVA);
-		if (!format_status) { return false; }
-		set_status = ::SetEnvironmentVariableW(L"LEP_NLS_PATCHER_HOOK_VA", buffer);
-		if (!set_status) { return false; }
-
-		format_status = ::wsprintfW(buffer, format, nShellCodeVA);
-		if (!format_status) { return false; }
-		set_status = ::SetEnvironmentVariableW(L"LEP_NLS_PATCHER_SHELLCODE_VA", buffer);
-		if (!set_status) { return false; }
-
-		format_status = ::wsprintfW(buffer, format, nOldProtect);
-		if (!format_status) { return false; }
-		set_status = ::SetEnvironmentVariableW(L"LEP_NLS_PATCHER_PROTECTION", buffer);
-		if (!set_status) { return false; }
-
+        const auto store_status_0 = Utils::EnvHelper::StoreNum(L"Locale_Simulator_NLS_PATCHER_HOOK_VA", nHookVA);
+		if (!store_status_0) { return false; }
+        const auto store_status_1 = Utils::EnvHelper::StoreNum(L"Locale_Simulator_NLS_PATCHER_SHELLCODE_VA", nShellCodeVA);
+        if (!store_status_1) { return false; }
+        const auto store_status_2 = Utils::EnvHelper::StoreNum(L"Locale_Simulator_NLS_PATCHER_PROTECTION", nOldProtect);
+        if (!store_status_2) { return false; }
 		return true;
 	}
 } // namespace ZQF::LS::Core

@@ -9,7 +9,8 @@ add_library("${PROJECT_NAME}"
     "src/Locale_Simulator/Core/NlsPatcher.cpp"
     "src/Locale_Simulator/Core/MsgPatcher.cpp"
     "src/Locale_Simulator/Core/WndPatcher.cpp"
-)
+    "src/Locale_Simulator/Core/GdiPatcher.cpp"
+ "src/Locale_Simulator/Core/LsStatus.cpp" "src/Locale_Simulator/Core/LsStatus.h")
 add_library(LocaleSimulator::Core ALIAS "${PROJECT_NAME}")
 target_include_directories("${PROJECT_NAME}" PUBLIC "src")
 target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_23)

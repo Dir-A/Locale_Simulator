@@ -3,6 +3,7 @@
 #include <Locale_Simulator/Core/NlsPatcher.h>
 #include <Locale_Simulator/Core/MsgPatcher.h>
 #include <Locale_Simulator/Core/WndPatcher.h>
+#include <Locale_Simulator/Core/GdiPatcher.h>
 
 
 static auto StartHook(HMODULE /* hDllBase */) -> void
@@ -14,6 +15,8 @@ static auto StartHook(HMODULE /* hDllBase */) -> void
     ZQF::LS::Core::MsgPatcher::Install();
 
     ZQF::LS::Core::WndPatcher::Install();
+
+    ZQF::LS::Core::GdiPatcher::Install();
 }
 
 

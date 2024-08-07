@@ -19,6 +19,7 @@ namespace ZQF::LS::Core
         std::pair<std::unique_ptr<wchar_t[]>, std::size_t> buffer_0;
         std::pair<std::unique_ptr<wchar_t[]>, std::size_t> buffer_1;
         std::pair<std::unique_ptr<wchar_t[]>, std::size_t> buffer_2;
+
         if (dwExStyle & 0x80000000)
         {
             if (reinterpret_cast<SIZE_T>(plstrClassName) & 0xFFFF0000)
@@ -27,8 +28,8 @@ namespace ZQF::LS::Core
                 {
                     buffer_0 = Utils::MBCSToWide({ reinterpret_cast<const char*>(plstrClassName->Buffer), plstrClassName->Length });
                     plstrClassName->Buffer = buffer_0.first.get();
-                    plstrClassName->Length = static_cast<ULONG>(buffer_0.second);
-                    plstrClassName->MaximumLength = plstrClassName->Length + 1;
+                    plstrClassName->Length = static_cast<ULONG>(buffer_0.second * sizeof(wchar_t));
+                    plstrClassName->MaximumLength = plstrClassName->Length + (1 * sizeof(wchar_t));
                     plstrClassName->bAnsi = FALSE;
                 }
             }
@@ -38,10 +39,10 @@ namespace ZQF::LS::Core
 
                 if (plstrClsVersion->bAnsi)
                 {
-                    buffer_1 = Utils::MBCSToWide({ reinterpret_cast<const char*>(plstrClsVersion->Buffer), plstrClassName->Length });
+                    buffer_1 = Utils::MBCSToWide({ reinterpret_cast<const char*>(plstrClsVersion->Buffer), plstrClsVersion->Length });
                     plstrClsVersion->Buffer = buffer_1.first.get();
-                    plstrClsVersion->Length = static_cast<ULONG>(buffer_1.second);
-                    plstrClsVersion->MaximumLength = plstrClsVersion->Length + 1;
+                    plstrClsVersion->Length = static_cast<ULONG>(buffer_1.second * sizeof(wchar_t));
+                    plstrClsVersion->MaximumLength = plstrClsVersion->Length + 2;
                     plstrClsVersion->bAnsi = FALSE;
                 }
             }
@@ -51,10 +52,10 @@ namespace ZQF::LS::Core
 
                 if (plstrWindowName->bAnsi)
                 {
-                    buffer_2 = Utils::MBCSToWide({ reinterpret_cast<const char*>(plstrClsVersion->Buffer), plstrWindowName->Length });
+                    buffer_2 = Utils::MBCSToWide({ reinterpret_cast<const char*>(plstrWindowName->Buffer), plstrWindowName->Length });
                     plstrWindowName->Buffer = buffer_2.first.get();
-                    plstrWindowName->Length = static_cast<ULONG>(buffer_2.second);
-                    plstrWindowName->MaximumLength = plstrWindowName->Length + 1;
+                    plstrWindowName->Length = static_cast<ULONG>(buffer_2.second * sizeof(wchar_t));
+                    plstrWindowName->MaximumLength = plstrWindowName->Length + (1 * sizeof(wchar_t));
                     plstrWindowName->bAnsi = FALSE;
                 }
             }

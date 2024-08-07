@@ -7,16 +7,8 @@ namespace ZQF::LS::Core
 {
 	class NlsPatcher
 	{
-	private:
-		HANDLE m_hProcess{};
-		std::size_t m_nCodePage{};
-
 	public:
-		NlsPatcher() {};
-		NlsPatcher(const HANDLE hProcess, const std::size_t nCodePage) : m_hProcess{ hProcess }, m_nCodePage{ nCodePage } {};
-
-	public:
-		auto Install() const -> bool;
+        static auto Install(const HANDLE hProcess) -> bool;
 
 	public:
 		static auto AfterWith() -> bool;
