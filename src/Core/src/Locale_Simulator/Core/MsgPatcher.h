@@ -3,10 +3,10 @@
 
 namespace ZQF::LS::Core
 {
-    class Win32uPatcher
+    class MsgPatcher
     {
     public:
-        static auto Install() -> void;
+        static auto Install() -> bool;
 
     };
 } // namespace ZQF::LS::Core

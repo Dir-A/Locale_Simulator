@@ -9,7 +9,7 @@ namespace ZQF::LS::Utils
 	{
 	public:
 		static auto GetBuildNumber() -> std::size_t;
-		static auto IsProcessx64(const HANDLE hProcess) -> bool;
+		static auto IsProcessI386(const HANDLE hProcess) -> bool;
 	};
 } // namespace ZQF::LS::Utils
 

@@ -1,4 +1,4 @@
-#include <Locale_Simulator/Core/Win32uPatcher.h>
+#include <Locale_Simulator/Core/MsgPatcher.h>
 #include <Locale_Simulator/Utils/TextConvert.h>
 #include <ZxHook/SHooker.h>
 #include <Windows.h>
@@ -32,12 +32,28 @@ namespace ZQF::LS::Core
         }
     }
 
-    auto Win32uPatcher::Install() -> void
+    static auto FindNtUserMessageCall() -> std::size_t
     {
-        const auto win32u_handle = ::GetModuleHandleW(L"win32u.dll");
-        if (win32u_handle == NULL) { return; }
+        if (const auto win32u_handle = ::GetModuleHandleW(L"win32u.dll"); win32u_handle != NULL)
+        {
+            return reinterpret_cast<std::size_t>(::GetProcAddress(win32u_handle, "NtUserMessageCall"));
+        }
 
-        const auto fn_NtUserMessageCall_va = reinterpret_cast<std::size_t>(::GetProcAddress(win32u_handle, "NtUserMessageCall"));
+        if (const auto user32_handle = ::GetModuleHandleW(L"user32.dll"); user32_handle != NULL)
+        {
+            const auto gapfnScSendMessage = ::GetProcAddress(user32_handle, "gapfnScSendMessage");
+            if (gapfnScSendMessage == NULL) { return 0; }
+            return reinterpret_cast<std::size_t*>(gapfnScSendMessage)[0];
+        }
+
+        return 0;
+    }
+
+    auto MsgPatcher::Install() -> bool
+    {
+        const auto fn_NtUserMessageCall_va = Core::FindNtUserMessageCall();
+        if (fn_NtUserMessageCall_va == 0) { return false; }
         ZxHook::SHooker<Core::NtUserMessageCall_Hook>::Commit(fn_NtUserMessageCall_va);
+        return true;
     }
 }

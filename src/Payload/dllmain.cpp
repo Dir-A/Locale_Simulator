@@ -1,7 +1,7 @@
 #include <Windows.h>
 #include <ZxHook/Hook.h>
 #include <Locale_Simulator/Core/NlsPatcher.h>
-#include <Locale_Simulator/Core/Win32uPatcher.h>
+#include <Locale_Simulator/Core/MsgPatcher.h>
 
 
 static auto StartHook(HMODULE /* hDllBase */) -> void
@@ -10,7 +10,7 @@ static auto StartHook(HMODULE /* hDllBase */) -> void
 
     ZQF::LS::Core::NlsPatcher::AfterWith();
 
-    ZQF::LS::Core::Win32uPatcher::Install();
+    ZQF::LS::Core::MsgPatcher::Install();
 }
 
 
@@ -31,4 +31,4 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID /* lpRes
     return TRUE;
 }
 
-extern "C" VOID __declspec(dllexport) LEP_EXPORT_FUNC() {}
+extern "C" VOID __declspec(dllexport) LS_EXPORT_FUNC() {}

@@ -7,7 +7,7 @@ project(LocaleSimulator_Core)
 # Set Library
 add_library("${PROJECT_NAME}"
     "src/Locale_Simulator/Core/NlsPatcher.cpp"
-    "src/Locale_Simulator/Core/Win32uPatcher.cpp"
+    "src/Locale_Simulator/Core/MsgPatcher.cpp"
 )
 add_library(LocaleSimulator::Core ALIAS "${PROJECT_NAME}")
 target_include_directories("${PROJECT_NAME}" PUBLIC "src")
