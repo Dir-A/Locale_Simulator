@@ -15,8 +15,7 @@ Windows Locale Simulator
   
 - Message
 
-  - [ ] Win32u
-    - [ ] NtUserMessageCall
+  - [x] NtUserMessageCall
 
   [under implementation]
 
