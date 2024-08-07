@@ -15,7 +15,9 @@ Windows Locale Simulator
   
 - Message
 
-  - [x] NtUserMessageCall
+  - [ ] NtUserMessageCall
+    - [x] Wow64 Process
+    - [ ] x64 Process
 
   [under implementation]
 
