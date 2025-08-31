@@ -5,12 +5,12 @@
             "name": "windows-msvc-base",
             "hidden": true,
             "generator": "Ninja",
-            "binaryDir": "${sourceDir}/build/${presetName}",
-            "installDir": "${sourceDir}/install/${presetName}",
+            "binaryDir": "${sourceDir}/.build/${presetName}",
+            "installDir": "${sourceDir}/.install/${presetName}",
             "cacheVariables": {
                 "CMAKE_C_COMPILER": "cl.exe",
                 "CMAKE_CXX_COMPILER": "cl.exe",
-                "CMAKE_EXPORT_COMPILE_COMMANDS": "TRUE"
+                "CMAKE_EXPORT_COMPILE_COMMANDS": true
             },
             "condition": {
                 "type": "equals",

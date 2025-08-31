@@ -1,6 +1,6 @@
 # VS
 .vs/
-build/
+.build/
 
 # VSCode
 .vscode/.cache/

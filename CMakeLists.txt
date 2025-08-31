@@ -2,19 +2,16 @@
 cmake_minimum_required(VERSION 3.25)
 
 # Project Name
-project(Locale_Simulator_Main)
+project("Locale_Simulator_Main" VERSION 1.0 LANGUAGES CXX)
 
-# On Test Preset
-if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
-    include(CMakeMycfg.cmake)
-endif()
-
-include(CMakeMypkg.cmake)
+# Config
+include("cmake/ZQFSettings.cmake")
+include("cmake/ZQFPackages.cmake")
 
 # Source
-add_subdirectory(src)
+add_subdirectory("src")
 
 # On Test Config
 if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
-    add_subdirectory(test)
+    add_subdirectory("test")
 endif()

@@ -18,6 +18,8 @@
     "cmake.buildDirectory" : "${workspaceFolder}/build",
     "cmake.options.statusBarVisibility": "icon",
     "cmake.copyCompileCommands": "${workspaceFolder}/.vscode/compile_commands.json",
+    // clangd
+    "clangd.enable": false,
     // C/C++
     "C_Cpp.formatting": "vcFormat",
     "C_Cpp.default.cppStandard": "c++23",
@@ -112,8 +114,7 @@
         "xtr1common": "cpp",
         "xutility": "cpp",
         "set": "cpp",
-        "expected": "cpp",
-        "ranges": "cpp",
-        "unordered_set": "cpp"
+        "expected": "cpp"
     },
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
 }
