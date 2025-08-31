@@ -19,27 +19,27 @@ Windows Locale Simulator
     - [x] Wow64 Process
     - [ ] x64 Process
 
-  [under implementation]
+  [WIP]
 
 - GID
 
    - Default FaceName
 
-   [under implementation]
+   [WIP]
 
   - Default Charset
 
-    under implementation
+    WIP
 
-  [under implementation]
+  [WIP]
 
 - LCID
 
-  [under implementation]
+  [WIP]
 
 - Timezone
 
-  [under implementation]
+  [WIP]
 
 
 

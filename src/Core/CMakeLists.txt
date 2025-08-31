@@ -14,4 +14,4 @@ target_compile_options(${PROJECT_NAME} PRIVATE $<$<OR:$<C_COMPILER_ID:MSVC>,$<CX
 target_compile_options(${PROJECT_NAME} PRIVATE $<$<OR:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>:/utf-8>)
 
 # External Libraries
-target_link_libraries(${PROJECT_NAME} PRIVATE LocaleSimulator::Utils Zut::ZxHook)
+target_link_libraries(${PROJECT_NAME} PRIVATE LocaleSimulator::Utils)

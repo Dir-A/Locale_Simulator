@@ -3,9 +3,9 @@
 
 namespace ZQF::LS::Core
 {
-    class WndPatcher
-    {
-    public:
-        static auto Install() -> bool;
-    };
+  class WndPatcher
+  {
+  public:
+    static auto Install() -> bool;
+  };
 } // namespace ZQF::LS::Core

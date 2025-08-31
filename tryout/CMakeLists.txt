@@ -1,5 +1,5 @@
 # Project
-project("Locale_Simulator_Test" VERSION 1.0 LANGUAGES CXX)
+project("Locale_Simulator_tryout" VERSION 1.0 LANGUAGES CXX)
 
 # Executable
 add_executable(${PROJECT_NAME} "main.cpp")
